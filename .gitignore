@@ -1,0 +1,28 @@
+.DS_Store
+
+# NodeJS
+npm-debug.log
+node_modules/
+
+# Personal text editor file.
+*.sublime-project
+*.sublime-workspace
+
+# vs!
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+*.tmp
+*.ntvs_analysis.dat
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+build/
+bld/
+[Bb]in/
+[Oo]bj/

@@ -1,0 +1,52 @@
+var formatcode = {
+
+	unknown: 0xFF,
+	described: 0x00,
+
+	// fixed width
+	"null": 0x40,
+	"boolean": 0x56,
+	"true": 0x41,
+	"false": 0x42,
+	uint0: 0x43,
+	ulong0: 0x44,
+	ubyte: 0x50,
+	ushort: 0x60,
+	uint: 0x70,
+	ulong: 0x80,
+	"byte": 0x51,
+	"short": 0x61,
+	"int": 0x71,
+	"long": 0x81,
+	smalluint: 0x52,
+	smallulong: 0x53,
+	smallint: 0x54,
+	smalllong: 0x55,
+	"float": 0x72,
+	"double": 0x82,
+	Decimal32: 0x74,
+	Decimal64: 0x84,
+	Decimal128: 0x94,
+	"char": 0x73,
+	timestamp: 0x83,
+	uuid: 0x98,
+
+	// variable
+	binary8: 0xa0,
+	binary32: 0xb0,
+	string8: 0xa1,
+	string32: 0xb1,
+	symbol8: 0xa3,
+	symbol32: 0xb3,
+
+	// compound
+	list0: 0x45,
+	list8: 0xc0,
+	list32: 0xd0,
+	map8: 0xc1,
+	map32: 0xd1,
+	array8: 0xe0,
+	array32: 0xf0
+};
+
+exports.formatcode  = formatcode;

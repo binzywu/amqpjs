@@ -1,0 +1,22 @@
+primitive types:
+
+booleans, integral numbers, 
+floating point numbers, 
+timestamps, UUIDs, characters,
+strings, binary data, and symbols. 
+
+The collection types:
+arrays (monomorphic), 
+lists (polymorphic), 
+and maps.
+
+Described types
+sample:
+
+Composition types
+sample:
+
+
+Restricted types
+sample:
+

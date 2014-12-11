@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ebe20bd6-2cc1-40ff-9507-b2c06637d344}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>sample\test.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <StartWebBrowser>False</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Compile Include="lib\amqpcodec.js" />
+    <Compile Include="lib\codec\describedmap.js" />
+    <Compile Include="lib\delivery.js" />
+    <Compile Include="lib\framing\attach.js" />
+    <Compile Include="lib\framing\begin.js" />
+    <Compile Include="lib\framing\close.js" />
+    <Compile Include="lib\framing\detach.js" />
+    <Compile Include="lib\framing\dispose.js" />
+    <Compile Include="lib\framing\end.js" />
+    <Compile Include="lib\framing\error.js" />
+    <Compile Include="lib\framing\flow.js" />
+    <Compile Include="lib\framing\message.js" />
+    <Compile Include="lib\framing\outcome.js" />
+    <Compile Include="lib\framing\protocolheader.js" />
+    <Compile Include="lib\framing\transaction.js" />
+    <Compile Include="lib\framing\transfer.js" />
+    <Compile Include="lib\message.js" />
+    <Compile Include="lib\receiverlink.js" />
+    <Compile Include="lib\sasl\sasl.js" />
+    <Compile Include="lib\sasl\saslprofile.js" />
+    <Compile Include="lib\sasl\sasltransport.js" />
+    <Compile Include="lib\senderlink.js" />
+    <Compile Include="lib\util\linkedlist.js" />
+    <Compile Include="lib\util\trace.js" />
+    <Compile Include="lib\util\util.js" />
+    <Compile Include="test\transporttests.js" />
+    <Content Include="lib\types\types" />
+    <Content Include="package.json" />
+    <Compile Include="lib\codec\described.js" />
+    <Compile Include="lib\codec\describedlist.js" />
+    <Compile Include="lib\codec\describedvalue.js" />
+    <Compile Include="lib\codec\encoder.js" />
+    <Compile Include="lib\codec\fixedwidth.js" />
+    <Compile Include="lib\codec\formatcode.js" />
+    <Compile Include="lib\codec\symbol.js" />
+    <Compile Include="lib\connection.js" />
+    <Compile Include="lib\errorcode.js" />
+    <Compile Include="lib\index.js" />
+    <Compile Include="lib\link.js" />
+    <Compile Include="lib\session.js" />
+    <Compile Include="lib\transport.js" />
+    <Compile Include="lib\util\fsm.js" />
+    <Compile Include="sample\codec.js" />
+    <Compile Include="sample\test.js" />
+    <Compile Include="test\codectests.js" />
+    <Compile Include="test\frametests.js" />
+    <Compile Include="test\test.js" />
+    <Compile Include="lib\framing\frame.js" />
+    <Compile Include="lib\framing\open.js" />
+    <Compile Include="lib\types\map.js" />
+    <Compile Include="lib\types\multiple.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lib" />
+    <Folder Include="lib\codec\" />
+    <Folder Include="lib\framing" />
+    <Folder Include="lib\sasl\" />
+    <Folder Include="lib\types" />
+    <Folder Include="lib\util\" />
+    <Folder Include="sample\" />
+    <Folder Include="test" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
