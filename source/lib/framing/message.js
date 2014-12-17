@@ -4,7 +4,7 @@ var util = require('util'),
 	describedList = require("../codec/describedlist").describedList,
 	describedValue = require("../codec/describedvalue").describedValue,
 	DescribedMap = require("../codec/describedmap").DescribedMap,
-	formatcode = require("./formatcode").formatcode,
+	formatcode = require("../codec/formatcode").formatcode,
 	amqpcodec = require("../amqpcodec").amqpcodec;
 
 // message related codes

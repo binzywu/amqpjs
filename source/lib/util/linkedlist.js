@@ -2,11 +2,10 @@
 
 // node has prev and next.
 
-var linkedlist = function() {
-
+var LinkedList = function() {
 };
 
-linkedlist.prototype.add = function(node) {
+LinkedList.prototype.add = function(node) {
 	if (!this.head) {
 		this.head = this.tail = node;
 	} else {
@@ -20,7 +19,7 @@ linkedlist.prototype.add = function(node) {
 	}
 };
 
-linkedlist.prototype.remove = function(node) {
+LinkedList.prototype.remove = function(node) {
 	if (!node) {
 		throw new Error("node cannot be null.");
 	}
@@ -43,10 +42,10 @@ linkedlist.prototype.remove = function(node) {
 	node.prev = node.next = null;
 };
 
-linkedlist.prototype.clear = function() {
-	var first = this.head;
+LinkedList.prototype.clear = function() {
+	var head = this.head;
 	this.head = this.tail = null;
-	return first;
+	return head;
 };
 
-exports.linkedlist = linkedlist;
+exports.LinkedList = LinkedList;

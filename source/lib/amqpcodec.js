@@ -21,7 +21,7 @@ var amqpcodec = {
 		code: 0x0000000000000014,
 		name: "amqp:transfer:list"
 	},
-	Dispose: {
+    Disposition: {
 		code: 0x0000000000000015,
 		name: "amqp:disposition:list"
 	},

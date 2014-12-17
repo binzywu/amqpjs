@@ -2,13 +2,13 @@ var util = require('util'),
 	Link = require("./link").Link,
 	source = require("./framing/outcome").source,
 	target = require("./framing/outcome").target,
-	linkedlist = require("./util/linkedlist").linkedlist;
+	LinkedList = require("./util/linkedlist").LinkedList;
 // senderlink
 
 var ReceiverLink = function(session, name, address) {
 	Link.call(this, session, name);
 
-	this.receivedMessages = new linkedlist();
+	this.receivedMessages = new LinkedList();
 	var sourceframe = new source();
 	sourceframe.address = address;
 	this._sendAttach(false, 0, new target(), sourceframe);

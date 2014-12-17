@@ -1,7 +1,8 @@
 var util = require('util'),
 	events = require('events'),
 	Attach = require("./framing/attach").attach,
-	Detach = require("./framing/detach").detach;
+    Detach = require("./framing/detach").detach,
+    Flow = require('./framing/flow').flow;
 
 var State = {
 	Start: 0,
@@ -42,6 +43,20 @@ Link.prototype.close = function(error) {
 	this._sendDetach();
 };
 
+Link.prototype.deliveryStateChanged = function (delivery) {
+    // no-op
+};
+
+Link.prototype.flow = function (flowframe) {
+	// no-op
+};
+
+Link.prototype.transfer = function (delivery, transferframe, buffer) {
+	// no-op
+};
+
+
+// privates
 Link.prototype._onAttach = function(handle, attachframe) {
 
 	if (this.state === State.AttachSent) {
@@ -75,19 +90,18 @@ Link.prototype._onDetach = function(detachframe) {
 	this.emit("close", detachframe.error);
 };
 
-Link.prototype._onFlow = function(flowframe) {
-	// no-op
-};
+Link.prototype._sendFlow = function (deliveryCount, credit) {
+    var flowFrame = new Flow();
+    flowFrame.handle = this.handle;
 
-Link.prototype._onTransfer = function(delivery, transferframe, buffer) {
-	// no-op
+    this.session.sendFlow(flowFrame);
 };
 
 Link.prototype._sendDetach = function() {
 	var detachframe = new Detach();
 	detachframe.handle = this.handle;
 	detachframe.close = true;
-	this.session._sendcmd(detachframe);
+	this.session._sendCommand(detachframe);
 };
 
 Link.prototype._sendAttach = function(role, initialDeliveryCount, target, source) {
@@ -107,14 +121,14 @@ Link.prototype._sendAttach = function(role, initialDeliveryCount, target, source
 		attachframe.initialDeliveryCount = initialDeliveryCount;
 	}
 
-	this.session._sendcmd(attachframe);
+	this.session._sendCommand(attachframe);
 };
 
 Link.prototype._sendDetach = function() {
 	var detachframe = new Detach();
 	detachframe.handle = this.handle;
 	detachframe.closed = true;
-	this.session._sendcmd(detachframe);
+	this.session._sendCommand(detachframe);
 };
 
 Link.prototype._throwIfDetach = function(operation) {

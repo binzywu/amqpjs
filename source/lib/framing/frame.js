@@ -7,7 +7,7 @@ var util = require('util'),
 	attach = require("./attach").attach,
 	flow = require("./flow").flow,
 	transfer = require("./transfer").transfer,
-	dispose = require("./dispose").dispose,
+    Disposition = require("./disposition").Disposition,
 	detach = require("./detach").detach,
 	end = require("./end").end,
 	close = require("./close").close,
@@ -31,8 +31,8 @@ encoder.addDescribed(amqpcodec.Flow.code, function() {
 encoder.addDescribed(amqpcodec.Transfer.code, function() {
 	return new transfer();
 });
-encoder.addDescribed(amqpcodec.Dispose.code, function() {
-	return new dispose();
+encoder.addDescribed(amqpcodec.Disposition.code, function() {
+	return new Disposition();
 });
 encoder.addDescribed(amqpcodec.Detach.code, function() {
 	return new detach();

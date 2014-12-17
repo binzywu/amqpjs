@@ -8,7 +8,6 @@ var delivery = function() {
 	// state -> deliverystate
 	// settled
 	// link
-
 	// node-> prev, next
 };
 

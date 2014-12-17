@@ -24,7 +24,7 @@
     <Compile Include="lib\framing\begin.js" />
     <Compile Include="lib\framing\close.js" />
     <Compile Include="lib\framing\detach.js" />
-    <Compile Include="lib\framing\dispose.js" />
+    <Compile Include="lib\framing\disposition.js" />
     <Compile Include="lib\framing\end.js" />
     <Compile Include="lib\framing\error.js" />
     <Compile Include="lib\framing\flow.js" />

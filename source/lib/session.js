@@ -1,11 +1,12 @@
 // session.js
 var util = require('util'),
     events = require('events'),
-    linkedlist = require("./util/linkedlist").linkedlist,
+    LinkedList = require("./util/linkedlist").LinkedList,
     End = require("./framing/end").end,
     begin = require("./framing/begin").begin,
     amqpcodec = require("./amqpcodec").amqpcodec,
-    Delivery = require("./delivery").delivery;
+    Delivery = require("./delivery").delivery,
+    Transfer = require("./framing/transfer").transfer;
 
 var State = {
     Start: 0,
@@ -28,8 +29,8 @@ var session = function (connection) {
     this.remotelinks.length = MaxLinks;
     
     // 
-    this.incomingList = new linkedlist();
-    this.outgoingList = new linkedlist();
+    this.incomingList = new LinkedList();
+    this.outgoingList = new LinkedList();
     this.nextOutgoingId = 0xFFFFFFFF - 2;
     this.incomingWindow = this.outgoingWindow = 2048;
     this.incomingDeliveryId = 0xFFFFFFFF;
@@ -41,8 +42,8 @@ var session = function (connection) {
     beginframe.outgoingWindow = this.outgoingWindow;
     beginframe.nextOutgoingId = this.nextOutgoingId;
     beginframe.handleMax = 7;
-    this.connection._sendcmd(this.channel, beginframe);
-
+    this.connection._sendCommand(this.channel, beginframe);
+    
     this.state = State.BeginSent;
 };
 
@@ -134,8 +135,25 @@ session.prototype.command = function (command, buffer) {
     }
 };
 
-session.prototype._throwIfEnded = function (operation) {
+session.prototype.sendDelivery = function (delivery, callback) {
+    this.outgoingList.add(delivery);
+    this._writeDelivery(delivery);
+};
 
+session.prototype.sendFlow = function (flowFrame) {
+    flowFrame.nextOutgoingId = this.nextOutgoingId;
+    flowFrame.outgoingWindow = this.outgoingWindow;
+    flowFrame.nextIncomingId = this.nextIncomingId;
+    flowFrame.incomingWindow = this.incomingWindow;
+    this._sendCommand(flowFrame);
+};
+
+
+// privates
+session.prototype._throwIfEnded = function (operation) {
+    if (this.state >= State.EndPipe) {
+        throw new Error("Illegal operation: " + operation + " when session in state:" + this.state);
+    }
 };
 
 session.prototype._attach = function (command) {
@@ -211,12 +229,47 @@ session.prototype._transfer = function (command, buffer) {
     link._onTransfer(delivery, command, buffer);
 };
 
-session.prototype._dispose = function (command) {
-
+session.prototype._dispose = function (disposition) {
+    var first = disposition.first;
+    var last = disposition.last;
+    var delivery = this.outgoingList.head;
+    while (delivery && delivery.deliveryId <= last) {
+        var next = delivery.next;
+        
+        if (delivery.deliveryId >= first) {
+            delivery.settled = disposition.settled;
+            delivery.changeState(disposition.State);
+            if (delivery.settled) {
+                this.outgoingList.remove(delivery);
+            }
+        }
+        
+        delivery = next;
+    }
 };
 
 session.prototype._writeDelivery = function (delivery) {
+    while (this.outgoingWindow > 0 && delivery && delivery.buffer && delivery.buffer.offset > 0) {
+        this.outgoingWindow--;
+        var transferFrame = new Transfer();
+        transferFrame.handle = delivery.handle;
+        
+        if (delivery.bytesTransfered == 0) {
+            // 
+            delivery.deliveryId = this.outgoingDeliveryId++;
+            transfer.deliveryTag = delivery.tag;
+            transfer.deliveryId = delivery.deliveryId;
+            transfer.messageFormat = 0;
+            transfer.settled = delivery.settled;
+            transfer.batchable = true;
+        }
+        
+        var length = delivery.buffer.offset;
+        this.connection._sendCommand();
 
+        // send
+        delivery.bytesTransfered += length - delivery.buffer.offset;
+    }
 };
 
 session.prototype._getlink = function (remoteHandle) {
@@ -234,11 +287,11 @@ session.prototype._getlink = function (remoteHandle) {
 };
 
 session.prototype._sendend = function () {
-    this._sendcmd(new End());
+    this._sendCommand(new End());
 };
 
-session.prototype._sendcmd = function (command, callback) {
-    this.connection._sendcmd(this.channel, command, callback);
+session.prototype._sendCommand = function (command, callback) {
+    this.connection._sendCommand(this.channel, command, callback);
 };
 
 // session object.

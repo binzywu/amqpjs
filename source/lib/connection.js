@@ -96,7 +96,7 @@ var connection = function (address) {
         openframe.hostname = self.transport.addressParts.hostname;
         openframe.maxFrameSize = self.maxframesize;
         openframe.channelMax = self.maxSessions - 1;
-        self._sendcmd(0, openframe);
+        self._sendCommand(0, openframe);
     }
 };
 
@@ -127,7 +127,7 @@ connection.prototype.close = function (error) {
 connection.prototype._sendClose = function (error) {
     var closeframe = new Close();
     closeframe.error = error;
-    this._sendcmd(0, closeframe);
+    this._sendCommand(0, closeframe);
 };
 
 connection.prototype._onframe = function (data) {
@@ -211,9 +211,9 @@ connection.prototype._ended = function (error) {
 };
 
 // TODO: support transfer
-connection.prototype._sendcmd = function (channel, cmd, callback) {
+connection.prototype._sendCommand = function (channel, command, callback) {
     this._throwIfClosed("send");
-    var buffer = frame.getbuffer(frametype.amqp, channel, cmd, 0);
+    var buffer = frame.getbuffer(frametype.amqp, channel, command, 0);
     
     // support buffer too?
     //if (bytebuffer.isByteBuffer(payload)) {
@@ -224,7 +224,11 @@ connection.prototype._sendcmd = function (channel, cmd, callback) {
     //}
     
     this.transport.write(buffer, callback);
-    Trace.info("SEND (ch=" + channel + ") " + cmd);
+    Trace.info("SEND (ch=" + channel + ") " + command);
+};
+
+connection.prototype._sendTransfer = function (channel, transfer, payload) {
+
 };
 
 connection.prototype._throwIfClosed = function (operation) {
