@@ -3,7 +3,6 @@ var util = require('util'),
 	source = require("./framing/outcome").source,
 	target = require("./framing/outcome").target,
 	LinkedList = require("./util/linkedlist").LinkedList;
-// senderlink
 
 var ReceiverLink = function(session, name, address) {
 	Link.call(this, session, name);

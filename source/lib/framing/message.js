@@ -40,7 +40,7 @@ util.inherits(MessageAnnotations, DescribedMap);
 
 // Properties
 var Properties = function() {
-	describedList.call(this, amqpcodec.Properties.code, 13);
+	describedList.call(this, amqpcodec.Properties.code);
 };
 
 util.inherits(Properties, describedList);
@@ -139,8 +139,8 @@ AmqpSequence.prototype.decode = function(buffer, valueonly) {
 };
 
 // amqpvalue
-var AmqpValue = function() {
-	describedValue.call(this, amqpcodec.AmqpValue.code);
+var AmqpValue = function(value) {
+	describedValue.call(this, amqpcodec.AmqpValue.code, value);
 };
 
 util.inherits(AmqpValue, describedValue);
@@ -148,6 +148,7 @@ util.inherits(AmqpValue, describedValue);
 exports.Header = Header;
 exports.DeliveryAnnotations = DeliveryAnnotations;
 exports.MessageAnnotations = MessageAnnotations;
+exports.ApplicationProperties = ApplicationProperties;
 exports.Properties = Properties;
 exports.Data = Data;
 exports.AmqpSequence = AmqpSequence;

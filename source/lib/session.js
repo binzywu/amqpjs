@@ -35,6 +35,7 @@ var session = function (connection) {
     this.incomingWindow = this.outgoingWindow = 2048;
     this.incomingDeliveryId = 0xFFFFFFFF;
     this.channel = connection._addsession(this);
+    this.outgoingDeliveryId = 0;
     
     // send begin
     var beginframe = new begin();
@@ -226,7 +227,7 @@ session.prototype._transfer = function (command, buffer) {
         }
     }
     
-    link._onTransfer(delivery, command, buffer);
+    link.transfer(delivery, command, buffer);
 };
 
 session.prototype._dispose = function (disposition) {
@@ -249,26 +250,34 @@ session.prototype._dispose = function (disposition) {
 };
 
 session.prototype._writeDelivery = function (delivery) {
-    while (this.outgoingWindow > 0 && delivery && delivery.buffer && delivery.buffer.offset > 0) {
+    delivery.buffer.mark(0);
+    while (this.outgoingWindow > 0 && delivery && delivery.buffer.markedOffset < delivery.buffer.offset) {
         this.outgoingWindow--;
         var transferFrame = new Transfer();
         transferFrame.handle = delivery.handle;
         
-        if (delivery.bytesTransfered == 0) {
-            // 
+        if (delivery.buffer.markedOffset === 0) {
+            // first one.
             delivery.deliveryId = this.outgoingDeliveryId++;
-            transfer.deliveryTag = delivery.tag;
-            transfer.deliveryId = delivery.deliveryId;
-            transfer.messageFormat = 0;
-            transfer.settled = delivery.settled;
-            transfer.batchable = true;
+            transferFrame.deliveryTag = delivery.tag;
+            transferFrame.deliveryId = delivery.deliveryId;
+            transferFrame.messageFormat = 0;
+            transferFrame.settled = delivery.settled;
+            transferFrame.batchable = true;
         }
         
-        var length = delivery.buffer.offset;
-        this.connection._sendCommand();
+        this.connection._sendTransfer(this.channel, transferFrame, delivery.buffer);
+        
+        // move to next
+        if (delivery.markedOffset == delivery.offset) {
+            delivery.buffer = null;
+            var next = delivery.next;
+            if (delivery.settled) {
+                this.outgoingList.remove(delivery);
+            }
 
-        // send
-        delivery.bytesTransfered += length - delivery.buffer.offset;
+            delivery = next;
+        }
     }
 };
 

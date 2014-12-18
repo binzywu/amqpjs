@@ -13,7 +13,7 @@ var readFormatCode = function(buffer) {
 };
 
 var encoder = function() {
-	var _this = this;
+	var self = this;
 	this.codecByCode = {};
 	this.knownDescribed = {};
 
@@ -466,7 +466,7 @@ var encoder = function() {
 						// always creating new buffer for list and map to handle nested.
 						var tmpBuffer = new bytebuffer();
 						for (var i = 0; i < data.length; i++) {
-							_this.encode(tmpBuffer, data[i]);
+							self.encode(tmpBuffer, data[i]);
 						}
 
 						var size = tmpBuffer.offset;
@@ -507,7 +507,7 @@ var encoder = function() {
 					var result = [];
 					result.length = count;
 					for (var i = 0; i < count; i++) {
-						result[i] = _this.decode(buffer);
+						result[i] = self.decode(buffer);
 					}
 
 					return result;
@@ -523,8 +523,8 @@ var encoder = function() {
 				var tmpBuffer = new bytebuffer();
 				var count = 0;
 				for (var property in data) {
-					_this.encode(tmpBuffer, property);
-					_this.encode(tmpBuffer, data[property]);
+					self.encode(tmpBuffer, property);
+					self.encode(tmpBuffer, data[property]);
 					count = count + 2;
 				}
 
@@ -566,8 +566,8 @@ var encoder = function() {
 
 				var result = {};
 				for (var i = 0; i < count / 2; i++) {
-					var key = _this.decode(buffer);
-					result[key] = _this.decode(buffer);
+					var key = self.decode(buffer);
+					result[key] = self.decode(buffer);
 				}
 
 				return result;

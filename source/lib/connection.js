@@ -210,25 +210,18 @@ connection.prototype._ended = function (error) {
     this.close(error);
 };
 
-// TODO: support transfer
 connection.prototype._sendCommand = function (channel, command, callback) {
     this._throwIfClosed("send");
-    var buffer = frame.getbuffer(frametype.amqp, channel, command, 0);
-    
-    // support buffer too?
-    //if (bytebuffer.isByteBuffer(payload)) {
-    //    var payloadsize = Math.min(payload.length, this.maxframesize - buffer.offset);
-    //    payload.copyTo(buffer, buffer.offset, payload.offset, payloadsize);
-    //    payload.offset = payload.offset + payloadsize;
-    //    buffer.offset = buffer.offset + payloadsize;
-    //}
-    
+    var buffer = frame.encodeCommand(frametype.amqp, channel, command, 0);
     this.transport.write(buffer, callback);
     Trace.info("SEND (ch=" + channel + ") " + command);
 };
 
-connection.prototype._sendTransfer = function (channel, transfer, payload) {
-
+connection.prototype._sendTransfer = function (channel, transfer, payload, callback) {
+    this._throwIfClosed("send");
+    var result = frame.encodeTransfer(frametype.amqp, channel, transfer, payload, this.maxframesize, callback);
+    this.transport.write(result.buffer, callback);
+    Trace.info("SEND (ch={0}) {1} payload {2}".format(channel, transfer, result.payloadSize));
 };
 
 connection.prototype._throwIfClosed = function (operation) {

@@ -13,22 +13,28 @@ var connection = new amqp.connection("amqp://localhost:5672?trace=true");
 connection.once("opened", function () {
     var session = new amqp.session(connection);
     session.on("opened", function () {
-
+        
         var sender = new amqp.SenderLink(session, "sender-link", "q1");
         sender.once("close", function (error) {
             console.log("sender close:" + error);
             session.close();
         });
-
+        
         sender.once("attached", function () {
             console.log("sender attached");
             
             // start sending message
+            var message = new amqp.Message();
+            message.properties = new amqp.Properties();
+            message.groupId = 'abcdefg';
+            message.applicationProperties = new amqp.ApplicationProperties();
+            message.applicationProperties["sn"] = 0;
+            sender.send(message);
             
             sender.close();
         });
     });
-
+    
     session.once("close", function (error) {
         console.log("session close");
         connection.close();
