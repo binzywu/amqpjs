@@ -4,7 +4,8 @@ var util = require('util'),
 	describedList = require("../codec/describedlist").describedList,
 	describedValue = require("../codec/describedvalue").describedValue,
 	DescribedMap = require("../codec/describedmap").DescribedMap,
-	formatcode = require("../codec/formatcode").formatcode,
+    symbol = require('../codec/symbol').symbol,
+    Uint = require('../codec/uint').Uint,
 	amqpcodec = require("../amqpcodec").amqpcodec;
 
 // message related codes
@@ -52,12 +53,12 @@ Properties.prototype.encode = function(buffer, valueonly) {
 	this.fields[3] = this.subject;
 	this.fields[4] = this.replyTo;
 	this.fields[5] = this.correlationId;
-	this.fields[6] = this.contentType;
-	this.fields[7] = this.contentEncoding;
+	this.fields[6] = this.contentType ? new symbol(this.contentType) : null;
+	this.fields[7] = this.contentEncoding ? new symbol(this.contentEncoding) : null;
 	this.fields[8] = this.absoluteExpiryTime;
 	this.fields[9] = this.creationTime;
 	this.fields[10] = this.groupId;
-	this.fields[11] = this.groupSequence;
+	this.fields[11] = typeof this.groupSequence == 'undefined' ? null : new Uint(this.groupSequence);
 	this.fields[12] = this.replyToGroupId;
 	describedList.prototype.encode.call(this, buffer, valueonly);
 };

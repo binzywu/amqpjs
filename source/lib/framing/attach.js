@@ -47,7 +47,7 @@ attach.prototype.decode = function(buffer, valueonly) {
 	this.linkname = this.fields[0];
 	this.handle = this.fields[1];
 	this.role = this.fields[2] == true;
-	this.sndSettleMode = this.fields[3] === null ? 0 : this.fields[4];
+	this.sndSettleMode = this.fields[3] === null ? 0 : this.fields[3];
 	this.rcvSettleMode = this.fields[4] === null ? 0 : this.fields[4];
 	this.source = this.fields[5];
 	this.target = this.fields[6];
@@ -61,7 +61,8 @@ attach.prototype.decode = function(buffer, valueonly) {
 };
 
 attach.prototype.toString = function() {
-	return "{0} {linkname:{1}}".format(amqpcodec.Attach.name, this.linkname);
+    return "{0} {linkname:{1},handle:{2},role:{3},snd-settle-mode:{4},rcv-settle-mode:{5},source:{6},target:{7}}"
+        .format(amqpcodec.Attach.name, this.linkname, this.handle, this.role, this.sndSettleMode, this.rcvSettleMode, this.source, this.target);
 }
 
 exports.attach = attach;

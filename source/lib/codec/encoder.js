@@ -102,7 +102,7 @@ var encoder = function() {
 		this.codecByCode[formatcode.smalluint] = function(codecCode) {
 			return {
 				encode: function(buffer, data) {
-					if (codecCode == formatcode.uint0) {
+					if (codecCode == formatcode.uint0 || data === 0) {
 						buffer.writeUint8(formatcode.uint0);
 					} else if (data <= 255) {
 						buffer.writeUint8(formatcode.smalluint)

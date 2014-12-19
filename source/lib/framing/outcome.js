@@ -33,7 +33,7 @@ target.prototype.decode = function(buffer, valueonly) {
 };
 
 target.prototype.toString = function() {
-	return amqpcodec.Target.name;
+	return "{0}, {address:{1}}".format(amqpcodec.Target.name, this.address);
 }
 
 // source

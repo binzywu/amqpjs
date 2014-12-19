@@ -1,4 +1,5 @@
 var util = require('util'),
+    symbol = require('../codec/symbol').symbol,
 	describedList = require("../codec/describedlist").describedList,
 	amqpcodec = require("../amqpcodec").amqpcodec;
 

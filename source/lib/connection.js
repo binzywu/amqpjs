@@ -226,7 +226,7 @@ connection.prototype._sendTransfer = function (channel, transfer, payload, callb
 
 connection.prototype._throwIfClosed = function (operation) {
     if (this.state > State.CloseReceived) {
-        throw new Error("illegal state: " + this.state + "for operation: " + operation);
+        throw new Error("illegal state: " + this.state + " for operation: " + operation);
     }
 };
 

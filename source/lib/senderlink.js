@@ -12,7 +12,6 @@ var SenderLink = function (session, name, address) {
     Link.call(this, session, name);
     
     this.outgoingList = new LinkedList();
-    this.deliveryCount = 0;
     var targetframe = new target();
     targetframe.address = address;
     this._sendAttach(false, this.deliveryCount, targetframe, new source());

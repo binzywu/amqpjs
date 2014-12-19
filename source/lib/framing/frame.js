@@ -124,6 +124,7 @@ exports.frame = {
         var payloadSize = Math.min(payload.offset, bufferSize - buffer.offset);
         // copy payload to buffer
         payload.slice(payload.markedOffset, payloadSize).copyTo(buffer, buffer.offset, 0, payloadSize);
+        buffer.offset = buffer.offset + payloadSize;
         payload.mark(payload.markedOffset + payloadSize);
         
         // length

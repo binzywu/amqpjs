@@ -54,6 +54,8 @@ Message.prototype.decode = function (buffer) {
             throw new Error(ErrorCode.FramingError);
         }
     }
+
+    return this;
 };
 
 exports.Message = Message;

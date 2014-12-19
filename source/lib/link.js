@@ -21,7 +21,8 @@ var Link = function(session, name) {
 	this.session = session;
 	this.name = name;
 	this.handle = session.addLink(this);
-	this.state = State.Start;
+    this.state = State.Start;
+    this.deliveryCount = 0;
 };
 
 util.inherits(Link, events.EventEmitter);
@@ -71,9 +72,7 @@ Link.prototype._onAttach = function(handle, attachframe) {
 		this.handleAttach(attachframe);
 	}
 
-	if (attachframe.target && attachframe.source) {
-		this.emit("attached", attachframe.target, attachframe.source);
-	}
+    this.emit("attached", attachframe.target, attachframe.source);
 };
 
 Link.prototype._onDetach = function(detachframe) {
@@ -133,8 +132,12 @@ Link.prototype._sendDetach = function() {
 
 Link.prototype._throwIfDetach = function(operation) {
 	if (this.state >= State.DetachPipe) {
-		throw new Error("Illegal state: " + this.state);
+		throw new Error("Illegal state: {0} for operation: {1} on link".format(this.state, operation));
 	}
+};
+
+Link.prototype._detaching = function () {
+    return this.state >= State.DetachPipe;
 };
 
 exports.Link = Link;

@@ -31,10 +31,13 @@ var session = function (connection) {
     // 
     this.incomingList = new LinkedList();
     this.outgoingList = new LinkedList();
-    this.nextOutgoingId = 0xFFFFFFFF - 2;
     this.incomingWindow = this.outgoingWindow = 2048;
-    this.incomingDeliveryId = 0xFFFFFFFF;
     this.channel = connection._addsession(this);
+    
+    // sequencenumbers    
+    this.nextIncomingId = 0;
+    this.incomingDeliveryId = 0xFFFFFFFF;
+    this.nextOutgoingId = 0xFFFFFFFF - 2;
     this.outgoingDeliveryId = 0;
     
     // send begin
@@ -201,7 +204,7 @@ session.prototype._flow = function (command) {
     }
     
     if (command.hasHandle) {
-        this._getlink(flow.handle)._onFlow(command);
+        this._getlink(flow.handle).flow(command);
     }
 };
 
@@ -239,7 +242,7 @@ session.prototype._dispose = function (disposition) {
         
         if (delivery.deliveryId >= first) {
             delivery.settled = disposition.settled;
-            delivery.changeState(disposition.State);
+            delivery.changeState(disposition.state);
             if (delivery.settled) {
                 this.outgoingList.remove(delivery);
             }
@@ -275,7 +278,7 @@ session.prototype._writeDelivery = function (delivery) {
             if (delivery.settled) {
                 this.outgoingList.remove(delivery);
             }
-
+            
             delivery = next;
         }
     }
