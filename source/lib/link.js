@@ -28,7 +28,6 @@ var Link = function(session, name) {
 util.inherits(Link, events.EventEmitter);
 
 Link.prototype.close = function(error) {
-	// 
 	if (this.state === State.End) {
 		return;
 	} else if (this.state === State.AttachSent) {
@@ -44,6 +43,7 @@ Link.prototype.close = function(error) {
 	this._sendDetach();
 };
 
+// callbacks
 Link.prototype.deliveryStateChanged = function (delivery) {
     // no-op
 };
@@ -56,10 +56,8 @@ Link.prototype.transfer = function (delivery, transferframe, buffer) {
 	// no-op
 };
 
-
 // privates
 Link.prototype._onAttach = function(handle, attachframe) {
-
 	if (this.state === State.AttachSent) {
 		this.state = State.Attached;
 	} else if (this.state === State.DetachPipe) {
@@ -86,12 +84,14 @@ Link.prototype._onDetach = function(detachframe) {
 	}
 
 	this.close(detachframe.error);
-	this.emit("close", detachframe.error);
+	this.emit("detached", detachframe.error);
 };
 
 Link.prototype._sendFlow = function (deliveryCount, credit) {
     var flowFrame = new Flow();
     flowFrame.handle = this.handle;
+    flowFrame.deliveryCount = deliveryCount;
+    flowFrame.linkCredit = credit;
 
     this.session.sendFlow(flowFrame);
 };

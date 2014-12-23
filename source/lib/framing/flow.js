@@ -10,13 +10,13 @@ var flow = function () {
 util.inherits(flow, describedList);
 
 flow.prototype.encode = function (buffer, valueonly) {
-    this.fields[0] = this.nextIncomingId ? new Uint(this.nextIncomingId) : null;
-    this.fields[1] = this.incomingWindow ? new Uint(this.incomingWindow) : null;
-    this.fields[2] = this.nextOutgoingId ? new Uint(this.nextOutgoingId) : null;
-    this.fields[3] = this.outgoingWindow ? new Uint(this.outgoingWindow) : null;
-    this.fields[4] = new Uint(this.handle)
-    this.fields[5] = this.deliveryCount ? new Uint(this.deliveryCount) : null;
-    this.fields[6] = this.linkCredit ? new Uint(this.linkCredit) : null;
+    this.fields[0] = new Uint(this.nextIncomingId);
+    this.fields[1] = new Uint(this.incomingWindow);
+    this.fields[2] = new Uint(this.nextOutgoingId);
+    this.fields[3] = new Uint(this.outgoingWindow);
+    this.fields[4] = new Uint(this.handle);
+    this.fields[5] = new Uint(this.deliveryCount);
+    this.fields[6] = new Uint(this.linkCredit);
     this.fields[7] = this.available;
     this.fields[8] = this.drain;
     this.fields[9] = this.echo;
@@ -37,8 +37,15 @@ flow.prototype.decode = function (buffer, valueonly) {
     this.drain = this.fields[8] == true;
     this.echo = this.fields[9] == true;
     this.properties = this.fields[10];
-    
-    this.hasHandle = this.fields[4] !== null;
+};
+
+flow.prototype.hasHandle = function () {
+    return this.fields[4] !== null;
+};
+
+flow.prototype.toString = function () {
+    return "{0} (next-in-id:{1},in-window:{2},next-out-id:{3},out-window:{4},handle:{5},delivery-count:{6},link-credit:{7})"
+        .format(amqpcodec.Flow.name, this.nextIncomingId, this.incomingWindow, this.nextOutgoingId, this.outgoingWindow, this.handle, this.deliveryCount, this.linkCredit);
 };
 
 exports.flow = flow;

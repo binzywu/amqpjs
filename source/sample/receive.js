@@ -4,12 +4,10 @@ connection.once("opened", function () {
     var session = new amqp.session(connection);
     session.on("opened", function () {
         var receiver = new amqp.ReceiverLink(session, "receiver-link", "q3");
-        receiver.once("attached", function () {
-            receiver.start(100);
-        });
+        receiver.start(100);
         
-        receiver.once("close", function (error) {
-            console.log("receiver close:" + error);
+        receiver.once("detached", function (error) {
+            console.log("receiver detached:" + error);
             session.close();
         });
         
@@ -23,6 +21,10 @@ connection.once("opened", function () {
                 receiver.close();
             }
         });
+
+        //receiver.on("attached", function () {
+        //    receiver.close();
+        //});
     });
     
     session.once("close", function (error) {

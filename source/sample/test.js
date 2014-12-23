@@ -18,8 +18,8 @@ connection.once("opened", function () {
         //var receiver = new amqp.ReceiverLink(session, "receiver-link", "q3");
         //receiver.start(100);
         
-        sender.once("close", function (error) {
-            console.log("sender close:" + error);
+        sender.once("detached", function (error) {
+            console.log("sender detached:" + error);
             session.close();
         });
         

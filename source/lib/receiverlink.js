@@ -16,7 +16,7 @@ var ReceiverLink = function (session, name, address) {
     this.receivedMessages = new LinkedList();
     var sourceframe = new source();
     sourceframe.address = address;
-    this._sendAttach(false, 0, new target(), sourceframe);
+    this._sendAttach(true, 0, new target(), sourceframe);
 };
 
 util.inherits(ReceiverLink, Link);

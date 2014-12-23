@@ -53,7 +53,7 @@ attach.prototype.decode = function(buffer, valueonly) {
 	this.target = this.fields[6];
 	this.unsettled = this.fields[7];
 	this.incompleteUnsettled = this.fields[8] == true;
-	this.initialDeliveryCount = this.fields[9] || 0xFFFFFFFF;
+	this.initialDeliveryCount = this.fields[9] || 0;
 	this.maxMessageSize = this.fields[10] || Long.MAX_UNSIGNED_VALUE;
 	this.offeredCapabilities = this.fields[11];
 	this.desiredCapabilities = this.fields[12];

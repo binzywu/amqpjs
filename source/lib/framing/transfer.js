@@ -24,7 +24,7 @@ transfer.prototype.encode = function (buffer, valueonly) {
     };
     this.fields[4] = this.settled;
     this.fields[5] = this.more;
-    this.fields[6] = this.rcvSettleMode ? {
+    this.fields[6] = typeof this.rcvSettleMode != 'undefined' && this.rcvSettleMode !== null ? {
         "!type": "byte",
         value: this.rcvSettleMode || 0
     } : null;

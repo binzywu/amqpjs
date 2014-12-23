@@ -203,8 +203,8 @@ session.prototype._flow = function (command) {
         return;
     }
     
-    if (command.hasHandle) {
-        this._getlink(flow.handle).flow(command);
+    if (command.hasHandle()) {
+        this._getlink(command.handle).flow(command);
     }
 };
 
@@ -217,7 +217,7 @@ session.prototype._transfer = function (command, buffer) {
     this.incomingWindow--;
     var newDelivery = command.hasDeliveryId && command.deliverytId > this.incomingDeliveryId;
     if (newDelivery) {
-        this.incomingDeliveryId = command.deliverytId;
+        this.incomingDeliveryId = command.deliveryId;
     }
     
     var link = this._getlink(command.handle);
