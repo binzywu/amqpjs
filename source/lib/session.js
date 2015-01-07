@@ -34,10 +34,10 @@ var session = function (connection) {
     this.incomingWindow = this.outgoingWindow = 2048;
     this.channel = connection._addsession(this);
     
-    // sequencenumbers    
+    // sequencenumbers, TODO: implement sq no.    
     this.nextIncomingId = 0;
-    this.incomingDeliveryId = 0xFFFFFFFF;
-    this.nextOutgoingId = 0xFFFFFFFF - 2;
+    this.incomingDeliveryId = -1; 
+    this.nextOutgoingId = -3;
     this.outgoingDeliveryId = 0;
     
     // send begin
@@ -214,8 +214,7 @@ session.prototype._transfer = function (command, buffer) {
     }
     
     this.nextIncomingId++;
-    this.incomingWindow--;
-    var newDelivery = command.hasDeliveryId && command.deliverytId > this.incomingDeliveryId;
+    var newDelivery = command.hasDeliveryId && command.deliveryId > this.incomingDeliveryId;
     if (newDelivery) {
         this.incomingDeliveryId = command.deliveryId;
     }
@@ -224,6 +223,9 @@ session.prototype._transfer = function (command, buffer) {
     var delivery;
     if (newDelivery) {
         delivery = new Delivery();
+        delivery.tag = command.deliveryTag;
+        delivery.deliveryId = command.deliveryId;
+        delivery.settled = command.settled;
         
         if (!delivery.settled) {
             this.incomingList.add(delivery);

@@ -2,9 +2,9 @@ var util = require('util'),
     Link = require("./link").Link,
     ErrorCode = require("./errorcode").errorcode,
     Message = require("./message").Message,
-    Accept = require("./framing/outcome").accept,
-    Release = require("./framing/outcome").release,
-    Reject = require("./framing/outcome").reject,
+    Accepted = require("./framing/outcome").accepted,
+    Released = require("./framing/outcome").released,
+    Rejected = require("./framing/outcome").rejected,
     source = require("./framing/outcome").source,
     target = require("./framing/outcome").target,
     LinkedList = require("./util/linkedlist").LinkedList,
@@ -47,17 +47,17 @@ ReceiverLink.prototype.setCredit = function (credit, autoRestore) {
 
 ReceiverLink.prototype.accept = function (msg) {
     this._throwIfDetach("accept");
-    this._disposeMessage(msg, new Accept());
+    this._disposeMessage(msg, new Accepted());
 };
 
 ReceiverLink.prototype.release = function () {
     this._throwIfDetach("release");
-    this._disposeMessage(msg, new Release());
+    this._disposeMessage(msg, new Released());
 };
 
 ReceiverLink.prototype.reject = function (msg, error) {
     this._throwIfDetach("reject");
-    var rejectFrame = new Reject();
+    var rejectFrame = new Rejected();
     rejectFrame.error = error;
     this._disposeMessage(msg, rejectFrame)
 };

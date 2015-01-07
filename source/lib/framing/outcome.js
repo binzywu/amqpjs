@@ -119,6 +119,25 @@ accepted.prototype.toString = function() {
 	return amqpcodec.Accepted.name;
 }
 
+// released
+var released = function () {
+    describedList.call(this, amqpcodec.Released.code, 0);
+};
+
+util.inherits(released, describedList);
+
+released.prototype.encode = function (buffer, valueonly) {
+    describedList.prototype.encode.call(this, buffer, valueonly);
+};
+
+released.prototype.decode = function (buffer, valueonly) {
+    describedList.prototype.decode.call(this, buffer, valueonly);
+};
+
+released.prototype.toString = function () {
+    return amqpcodec.Released.name;
+}
+
 // rejected
 var rejected = function() {
 	describedList.call(this, amqpcodec.Rejected.code, 1);
@@ -169,5 +188,6 @@ exports.target = target;
 exports.source = source;
 exports.received = received;
 exports.accepted = accepted;
+exports.released = released;
 exports.rejected = rejected;
 exports.modified = modified;

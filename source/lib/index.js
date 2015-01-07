@@ -1,12 +1,12 @@
 // nodeamqp
 [
-	'codec/described',
-	'codec/describedvalue',
-	'codec/describedlist',
 	'codec/symbol',
 	'codec/fixedwidth',
 	'codec/formatcode',	
 	'codec/encoder',	
+    'codec/described',
+    'codec/describedvalue',
+    'codec/describedlist',
 	'util/linkedlist',	
 	'util/util',	
 	'amqpcodec',
